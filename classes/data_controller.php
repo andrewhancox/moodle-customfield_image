@@ -133,6 +133,30 @@ class data_controller extends \core_customfield\data_controller {
     }
 
     /**
+     * Returns value in a human-readable format
+     *
+     * @return mixed|null value or null if empty
+     */
+    public function export_raw_url() {
+        $context = $this->get_field()->get_handler()->get_configuration_context();
+        $fs = get_file_storage();
+
+        $files = $fs->get_area_files($context->id, 'customfield_image', "value",
+            $this->get('id'),
+            'timemodified',
+            false);
+
+        if (empty($files)) {
+            return false;
+        }
+
+        $file = reset($files);
+        return moodle_url::make_pluginfile_url($file->get_contextid(),
+            $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(),
+            $file->get_filename());
+    }
+
+    /**
      * Delete data
      *
      * @return bool
