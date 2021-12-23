@@ -65,6 +65,11 @@ function customfield_image_pluginfile($course, $cm, $context, $filearea, $args, 
         send_file_not_found();
     }
 
+    if (strpos($filename, '.svg') !== false) {
+        $mimetype = 'image/svg+xml';
+    } else {
+        $mimetype = '';
+    }
     // We can now send the file back to the browser - in this case with a cache lifetime of 1 day and no filtering.
-    send_file($file, 86400, 0, false, $options);
+    send_file($file, 86400, 0, false, $options, false, $mimetype);
 }
